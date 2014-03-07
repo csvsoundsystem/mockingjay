@@ -103,7 +103,7 @@ function retrieveListStatuses(list_name, list_owner, count){
 };
 
 function retrieveListAndRetweet(opts){
-	var credentials = JSON.parse( fs.readFileSync(opts.credentials) )
+	var credentials = opts.credentials;
 	T     = new Tw( credentials );
 	regex = new RegExp(opts.regex);
 

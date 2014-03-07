@@ -15,27 +15,21 @@ npm install mockingjay
 var mockingjay = require('mockingjay');
 
 var opts = {
-	credentials: 'path/to/twitter_credentials.json',
 	list_owner: "cspan",
 	list_name: "members-of-congress",
 	count: 200,
-	regex: "(Obamacare|Obama)"
+	regex: "(Obamacare|Obama)",
+  credentials = {
+    consumer_key:         ...,
+    consumer_secret:      ...,
+    access_token:         ...,
+    access_token_secret:  ...
+  }
 }
 
 mockingjay.retweet(opts)
 ````
 
-
-Your `credentials.json` should look like this dummy object:
-
-````
-{
-  "consumer_key":         "sWev6Ji3ow9cas0e7gru0UtgeZ9Bi7wrOp4n",
-  "consumer_secret":      "ceJ8yef4phOm1haPp5Ik5onAc2wy8Heew8cAk0zaJ0F",
-  "access_token":         "nap8lue7hOv7Gick3yEeg5Veg6oi3tWowd1eb0cuEf7We",
-  "access_token_secret":  "Uv5cuv0Maj5MikNeaf0arSh3Ef2Hyel9ij5runch5An"
-}
-````
 
 #### TODO
 
