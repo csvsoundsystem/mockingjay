@@ -6,8 +6,8 @@ var fs             = require('fs'),
 
 var T,
 		regex,
-		last_time_file_name = 'last_successful_time_searched.txt',
-		last_time           = fs.existsSync('./' + last_time_file_name) ? fs.readFileSync('./'+ last_time_file_name).toString() : "Sat Jan 01 2000 00:00:00 GMT-0500 (EDT)",
+		last_time_file_name = './last_successful_time_searched.txt',
+		last_time           = fs.existsSync(last_time_file_name) ? fs.readFileSync(last_time_file_name).toString() : "Sat Jan 01 2000 00:00:00 GMT-0500 (EDT)",
 		status = {};
 
 function reportStatus(msg){
