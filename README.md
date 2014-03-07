@@ -27,8 +27,21 @@ var opts = {
   }
 }
 
-mockingjay.retweet(opts)
+mockingjay.retweet(opts, function(err, result){
+  if (!err){
+    console.log(result)
+    /*{
+      "status": true,
+      "new_since": 20,
+      "matching_since": 5
+    }*/
+  }else{
+    console.log(err)
+  }
+})
 ````
+
+`result` returns an object. If `status` is true, it found new matching tweets and reteweeted them without error. `new_since` are the number of new tweets in that list since last it checked. `matching_since` is the number of new and matching tweets since last it checked.
 
 
 #### TODO
