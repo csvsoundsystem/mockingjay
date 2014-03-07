@@ -36,3 +36,5 @@ mockingjay.retweet(opts)
   1. Change it so it doesn't filter tweets date, but rather takes advantage of the ``since_id`` param under ``lists/statuses`` in the <a href="https://dev.twitter.com/docs/api/1.1/get/lists/statuses" target="_blank">Twitter documentation</a>.
 
   2. Allow for retweeting of tweets that are retweets.
+
+  3. Add callback
