@@ -21,6 +21,8 @@ var opts = {
 	count: 200,
 	regex: "(Obamacare|Obama)"
 }
+
+mockingjay.retweet(opts)
 ````
 
 
