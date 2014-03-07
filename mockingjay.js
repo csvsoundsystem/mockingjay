@@ -1,20 +1,21 @@
-var Tw             = require('twit'),
-		fs             = require('fs'),
+var fs             = require('fs'),
+    Tw             = require('twit'),
 		_              = require('underscore'),
 		__             = require('./libs/underscore.ratelimit.js'),
-		Tw_credentials = require('/path/to/twitter/credentials.json'),
-		T;
+		verbose        = true;
 
-var T                   = new Tw(Tw_credentials),
+var T,
+		regex,
 		last_time_file_name = 'last_successful_time_searched.txt',
-		last_time           = fs.readFileSync('last_successful_time_searched.txt').toString(),
-		list_owner          = 'cspan',
-		list_name           = 'members-of-congress',
-		pages               = 200,
-		gun_regex           = /(chocolate)/g
+		last_time           = fs.existsSync('./' + last_time_file_name) ? fs.readFileSync('./'+ last_time_file_name).toString() : "Sat Jan 01 2000 00:00:00 GMT-0500 (EDT)";
 
+function reportStatus(msg){
+	if (verbose){
+		console.log(msg)
+	}
+}
 function retweetID(tweet_id){
-	T.post('statuses/retweet', {id: tweet_id, trim_user: true}, function(err, replies) {
+	T.post('statuses/retweet/:id', {id: tweet_id, trim_user: true}, function(err, replies) {
   	var this_moment = new Date();
 	  if(err){
 	    console.log('Retweet status:',this_moment, err);
@@ -53,7 +54,8 @@ function recordDate(file_name){
 function filterListByRegex(arr, regx){
 	var filtered_list = [];
 	_.each(arr, function(row){
-		var matches_regex = regx.test(row.text);
+		var tweet_text = row.text.toLowerCase()
+		var matches_regex = regx.test(tweet_text);
 		if(matches_regex){
 			filtered_list.push(row)
 		};
@@ -76,36 +78,38 @@ function filterListByDate(arr, date){
 
 function filterByDateAndRegex(arr){
 	var tweets_since_last_time = filterListByDate(arr, last_time);
-	var tweets_matching_regex_and_time  = filterListByRegex(arr, gun_regex);
+	reportStatus('Matching time: ' + tweets_since_last_time.length)
+	var tweets_matching_regex_and_time  = filterListByRegex(arr, regex);
+	reportStatus('Matching time + regex: ' + tweets_matching_regex_and_time.length)
 	return tweets_matching_regex_and_time
 };
 
 
-function startTheShow(arr){
+function matchAndRetweet(arr){
 	var tweets_matching_regex_and_time = filterByDateAndRegex(arr);
 	var tweet_ids_to_retweet = extractValuesFromJSON(tweets_matching_regex_and_time, 'id_str');
 	retweetIDs(tweet_ids_to_retweet);
 }
 
-function testRetweet(tweet_id){
-	T.post('statuses/retweet/'+tweet_id, tweet_id, function(err, replies) {
-	  if(err){
-	    console.log('Retweet error status:', err);
-	  }else{
-	  	console.log('Successful retweet', tweet_id)
-	  };
-	});
-}
-
-function retrieveListStatuses(list_name, list_owner, pages){
-	T.get('lists/statuses', { slug: list_name, owner_screen_name: list_owner, count: pages }, function(err, replies) {
+function retrieveListStatuses(list_name, list_owner, count){
+	T.get('lists/statuses', { slug: list_name, owner_screen_name: list_owner, count: count }, function(err, replies) {
 	  if(err){
 	    console.log(err);
 	  }else{
-	    startTheShow(replies);
-			recordDate(last_time_file_name);
+	    matchAndRetweet(replies);
+			// recordDate(last_time_file_name);
 	  };
 	});
 };
 
-retrieveListStatuses(list_name, list_owner, pages);
+function retrieveListAndRetweet(opts){
+	var credentials = JSON.parse( fs.readFileSync(opts.credentials) )
+	T     = new Tw( credentials );
+	regex = new RegExp(opts.regex);
+
+	retrieveListStatuses(opts.list_name, opts.list_owner, opts.count);
+}
+
+module.exports = {
+	retweet: retrieveListAndRetweet
+}
