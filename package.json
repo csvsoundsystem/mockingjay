@@ -1,6 +1,6 @@
 {
   "name": "mockingjay",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Create a twitter bot that follows a list and retweets tweets that match a regex pattern.",
   "main": "mockingjay.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mhkeller/mockingjay.git"
+    "url": "https://github.com/csvsoundsystem/mockingjay.git"
   },
   "keywords": [
     "regex",
@@ -22,9 +22,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mhkeller/mockingjay/issues"
+    "url": "https://github.com/csvsoundsystem/mockingjay/issues"
   },
-  "homepage": "https://github.com/mhkeller/mockingjay",
+  "homepage": "https://github.com/csvsoundsystem/mockingjay",
   "dependencies": {
     "twit": "~1.1.12",
     "underscore": "~1.6.0"
