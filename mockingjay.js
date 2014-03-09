@@ -6,7 +6,7 @@ var fs             = require('fs'),
 
 var T,
 		regex,
-		last_id_file_name = './last_id.json',
+		last_id_file_name = __dirname + '/last_id.json',
 		last_id_str       = fs.existsSync(last_id_file_name) ? JSON.parse( fs.readFileSync(last_id_file_name) ).last_id_str : null,
 		status = {};
 
