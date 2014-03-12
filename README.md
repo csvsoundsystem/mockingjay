@@ -23,7 +23,7 @@ var opts = {
 	list_name: "members-of-congress",
 	count: 200,
 	regex: "(Obamacare|Obama)",
-  credentials = {
+  credentials: {
     consumer_key:         ...,
     consumer_secret:      ...,
     access_token:         ...,
