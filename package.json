@@ -2,7 +2,7 @@
   "name": "mockingjay",
   "version": "0.1.2",
   "description": "Create a twitter bot that follows a list and retweets tweets that match a regex pattern.",
-  "main": "mockingjay.js",
+  "main": "src/mockingjay.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
