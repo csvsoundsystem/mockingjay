@@ -1,7 +1,7 @@
 var fs             = require('fs'),
     Tw             = require('twit'),
 		_              = require('underscore'),
-		__             = require('./libs/underscore.ratelimit.js'),
+		__             = require('../libs/underscore.ratelimit.js'),
 		verbose        = true;
 
 var T,
@@ -16,38 +16,44 @@ function reportStatus(msg){
 	}
 }
 
-function retweetID(tweet_id, cb){
-	T.post('statuses/retweet/:id', {id: tweet_id, trim_user: true}, function(err, replies) {
-  	var this_moment = new Date();
-	  if(err){
-	    console.log('Retweet status:',this_moment, err);
-	    cb(err, status)
-	  }else{
-	  	console.log('Successful retweet', this_moment, tweet_id)
-	  	cb(null, status)
-	  };
-	});
+function isRetweet(tweet_id, map){
+	var tweet = map[tweet_id];
+	if (tweet['retweeted_status']) return true
+	return false
 }
 
-function retweetIDs(arr, cb){
+function retweetID(tweet_id, map, cb){
+	var is_retweet = isRetweet(tweet_id, map);
+
+	if (!is_retweet){
+		T.post('statuses/retweet/:id', {id: tweet_id, trim_user: true}, function(err, replies) {
+	  	var this_moment = new Date();
+		  if(err){
+		    reportStatus('Retweet status:',this_moment, err);
+		    cb(err, status)
+		  }else{
+		  	reportStatus('Successful retweet', this_moment, tweet_id)
+		  	cb(null, status)
+		  };
+		});
+	}else{
+		// succesfully catching tweets that are retweets
+		// TODO, retweet them differently
+		console.log('caught')
+	}
+}
+
+function retweetIDs(arr, map, cb){
 	var retweetID_rateLimited = _.rateLimit(retweetID, 500); // Limit the speed of retweets to one every 500ms
 	if (arr.length){
 		status.retweeted_matches = true
-		_.each(arr, function(tweet_id){
-			retweetID_rateLimited(tweet_id, cb);
+		arr.forEach(function(tweet_id){
+			retweetID_rateLimited(tweet_id, map, cb);
 		});
 	}else{
 		status.retweeted_matches = false;
 		cb(null, status)
 	}
-};
-
-function extractValuesFromJSON(arr, key){
-	var key_list = [];
-	_.each(arr, function(row){
-		key_list.push(row[key]);
-	});
-	return key_list
 };
 
 function recordId(arr, file_name){
@@ -60,36 +66,36 @@ function recordId(arr, file_name){
 		    if(err) {
 		        cb(err)
 		    } else {
-		        console.log("Id saved!");
+		        reportStatus("Id saved!");
 		    };
 		}); 
 	}
 };
 
-function filterListByRegex(arr, regx){
-	var filtered_list = [];
-	_.each(arr, function(row){
+function filterListByRegexAndMap(arr, regx, key){
+	var filtered_map = {};
+	arr.forEach(function(row){
 		var tweet_text = row.text.toLowerCase()
 		var matches_regex = regx.test(tweet_text);
 		if(matches_regex){
-			filtered_list.push(row)
+			filtered_map[row[key]] = row
 		};
 	});
-	reportMatches(arr, filtered_list)
-	return filtered_list
+	reportMatches(arr, filtered_map)
+	return filtered_map
 };
 
 function reportMatches(since, matches){
 	status.since_last = since.length;
-	status.matching   = matches.length;
+	status.matching   = _.size(matches);
 	reportStatus('Since last: ' + status.since_last);
 	reportStatus('Matching regex: ' + status.matching);
 }
 
 function matchAndRetweet(arr, cb){
-	var tweets_matching_regex = filterListByRegex(arr, regex);
-	var tweet_ids_to_retweet  = extractValuesFromJSON(tweets_matching_regex, 'id_str');
-	retweetIDs(tweet_ids_to_retweet, cb);
+	var tweets_matching_regex = filterListByRegexAndMap(arr, regex, 'id_str');
+	var tweet_ids_to_retweet  = _.keys(tweets_matching_regex);
+	retweetIDs(tweet_ids_to_retweet, tweets_matching_regex, cb);
 }
 
 function retrieveListStatuses(list_name, list_owner, last_id, count, cb){
