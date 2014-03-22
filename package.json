@@ -1,6 +1,6 @@
 {
   "name": "mockingjay",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Create a twitter bot that follows a list and retweets tweets that match a regex pattern.",
   "main": "src/mockingjay.js",
   "scripts": {
