@@ -50,5 +50,4 @@ mockingjay.retweet(opts, function(err, result){
 
 #### TODO
 
-  1. Old-style retweeting of tweets that are retweets.
-  2. Add optional id to last-id.json from argument passed to `.retweet`
+  1. Old-style retweeting of tweets that are retweets. (This is almost done)
