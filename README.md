@@ -1,7 +1,7 @@
 Mockingjay
 ===========
 
-Built off of <a href="https://github.com/abelsonlive/regextweet" target="_blank">RegEx Tweet</a>, a Twitter API 1.1 script to make a Twitter bot that retweets tweets that contain words in a RegEx. 
+A Twitter API 1.1 script to make a Twitter bot that retweets tweets that contain words in a RegEx. Built off of <a href="https://github.com/abelsonlive/regextweet" target="_blank">RegEx Tweet</a>, 
 
 It currently powers [@YourRepsOnGuns](http://twitter.com/yourrepsonguns), retweeting members of congress when they tweet about firearms and related words. 
 
@@ -19,6 +19,7 @@ npm install mockingjay
 var mockingjay = require('mockingjay');
 
 var opts = {
+  bot_name: "obamacare-bot",
 	list_owner: "cspan",
 	list_name: "members-of-congress",
 	count: 200,
@@ -45,9 +46,12 @@ mockingjay.retweet(opts, function(err, result){
 })
 ````
 
+### Options
+
+Give your bot a filename-friendly name with the `bot_name` option. Mockingjay only checks new tweets since the last time it ran. It does this by saving the id of the most latest tweet in a file at `src/last-ids/<bot-name>-last-id.json`. Specifying a name will make sure that your bot flock won't get confused about when each one ran. 
+
+`count` is how many tweets to return. 
+
+### Callback
+
 `result` returns an object. If `retweeted_matches` is true, it found new matching tweets and retweeted them without error. If everything went well but it didn't find any matches, `status` is `false`. `since_last` are the number of new tweets in that list since last it checked. `matching` is the number of new and matching tweets since last it checked.
-
-
-#### TODO
-
-  1. Old-style retweeting of tweets that are retweets. (This is almost done)
