@@ -52,6 +52,13 @@ Give your bot a filename-friendly name with the `bot_name` option. Mockingjay on
 
 `count` is how many tweets to return. 
 
+### Crontab
+
+This package is meant to be run on a cron. Here's an example setup that runs it on the 1s
+
+````
+1,11,21,31,41,51 * * * * /usr/bin/node /home/ubuntu/tasks/botname/bot.js
+````
 ### Callback
 
 `result` returns an object. If `retweeted_matches` is true, it found new matching tweets and retweeted them without error. If everything went well but it didn't find any matches, `status` is `false`. `since_last` are the number of new tweets in that list since last it checked. `matching` is the number of new and matching tweets since last it checked.
