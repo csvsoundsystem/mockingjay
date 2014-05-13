@@ -142,7 +142,7 @@ function retrieveListAndRetweet(opts, cb){
 	    bot_name = (opts.bot_name) ? opts.bot_name + '-' : '';
 
 	T     = new Tw( credentials );
-	regex = new RegExp(opts.regex);
+	regex = new RegExp(opts.regex, 'i');
 
 	last_id_file_name = __dirname + '/last-ids/'+bot_name+'last-id.json',
 	last_id_str       = fs.existsSync(last_id_file_name) ? JSON.parse( fs.readFileSync(last_id_file_name) ).last_id_str : null,
