@@ -23,16 +23,14 @@ function isRetweet(tweet_id, tweet_dict){
 	return false;
 }
 
-function constructOldStyleRetweet(tweet_data){
-	// If the tweet is a retweet, we want to give it an old style retweet
-	// So we have to grab the retweeted tweet's txt and prepend it with `<username-of-person-who-retweeted> RT: <text-of-original-tweet>`
-	// Unfortunatly tweets that are longer than 140 characters will have to be truncated. That is the boundary and the price of immortality.
-	var retweeter_username = tweet_data.user.screen_name,
-			retweeted_text     = tweet_data.text,
-			combination_retweeted_tweet_text = '.@' + retweeter_username  + ' ' + retweeted_text;
-	
-	if (combination_retweeted_tweet_text.length > 140) return combination_retweeted_tweet_text.substring(0,137) + '...';
-	return combination_retweeted_tweet_text
+function constructTweetOfARetweet(tweet_data){
+	// If the tweet is a retweet, send out a tweet that looks like:
+	// .@<person-of-interest> retweeted @<person-they-retweeted>: <url-of-that-tweet>
+	var retweeter_username    = tweet_data.user.screen_name,
+			retweeted_username    = tweet_data.retweeted_status.user.screen_name,
+			retweeted_tweet_status  = tweet_data.retweeted_status.id_str,
+			combination_retweeted_tweet_text = '.@' + retweeter_username  + ' retweeted @' + retweeted_username  + ': http://twitter.com/' + retweeted_username + '/status/' + retweeted_tweet_status;
+	return combination_retweeted_tweet_text;
 }
 
 function retweetID(tweet_id, tweet_dict, cb){
@@ -45,8 +43,8 @@ function retweetID(tweet_id, tweet_dict, cb){
 		tweet_type = 'statuses/retweet/:id';
 		tweet_info = {id: tweet_id, trim_user: true};
 	}else{
-		// Retweet tweets that are retweets as old style retweets, obvs.
-		status = constructOldStyleRetweet(tweet_dict[tweet_id]);
+		// Retweet tweets that are retweets differently.
+		status = constructTweetOfARetweet(tweet_dict[tweet_id]);
 		tweet_type = 'statuses/update';
 		tweet_info = {status: status};
 	}
