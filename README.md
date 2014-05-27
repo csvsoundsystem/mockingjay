@@ -68,7 +68,7 @@ If someone in your list *retweeted* a tweet that matches your criteria, e.g. you
 .@<person-on-your-tracking-list> retweeted @<person-they-retweeted>: <url-of-original-tweet>
 ````
 
-which would look like this if a Mockingjay bot were retweeting @csvsoundsystem whenever they mentioned "big data", which someone should make by the way.
+Or, another example: it would look like this if a Mockingjay bot were retweeting @csvsoundsystem whenever they mentioned "big data", which someone should make by the way.
 
 ````
 @csvsoundsystem retweeted @lifewinning: https://twitter.com/lifewinning/status/445688842721705985 
