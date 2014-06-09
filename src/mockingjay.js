@@ -8,7 +8,7 @@ var T,
 		regex,
 		last_id_file_name,
 		last_id_str,
-		status = {};
+		mockingjay_status = {};
 
 function reportStatus(msg){
 	if (verbose){
@@ -33,44 +33,46 @@ function constructTweetOfARetweet(tweet_data){
 	return combination_retweeted_tweet_text;
 }
 
-function retweetID(tweet_id, tweet_dict, cb){
+function retweetID(tweet_id, tweet_dict, idx, number_of_ids_to_retweet, cb){
 	var is_retweet = isRetweet(tweet_id, tweet_dict),
 			tweet_type,
 			tweet_info,
-			status;
+			tweet_msg;
 
 	if (!is_retweet){
 		tweet_type = 'statuses/retweet/:id';
 		tweet_info = {id: tweet_id, trim_user: true};
 	}else{
 		// Retweet tweets that are retweets differently.
-		status = constructTweetOfARetweet(tweet_dict[tweet_id]);
+		tweet_msg = constructTweetOfARetweet(tweet_dict[tweet_id]);
 		tweet_type = 'statuses/update';
-		tweet_info = {status: status};
+		tweet_info = {status: tweet_msg};
 	}
 
 	T.post(tweet_type, tweet_info, function(err, replies) {
   	var this_moment = new Date();
 	  if(err){
 	    reportStatus('Retweet status:', this_moment, err);
-	    cb(err, status)
+	    mockingjay_status.tweet_index = idx + ' of ' + number_of_ids_to_retweet;
+	    cb(err, mockingjay_status)
 	  }else{
 	  	reportStatus('Successful retweet', this_moment, tweet_id)
-	  	cb(null, status)
+	  	cb(null, mockingjay_status)
 	  };
 	});
 }
 
 function retweetIDs(arr, tweet_dict, cb){
-	var retweetID_rateLimited = _.rateLimit(retweetID, 500); // Limit the speed of retweets to one every 500ms
-	if (arr.length){
-		status.retweeted_matches = true;
-		arr.forEach(function(tweet_id){
-			retweetID_rateLimited(tweet_id, tweet_dict, cb);
+	var retweetID_rateLimited = _.rateLimit(retweetID, 250); // Limit the speed of retweets to one every 500ms
+	var number_of_ids_to_retweet = arr.length;
+	if (number_of_ids_to_retweet){
+		mockingjay_status.retweeted_matches = true;
+		arr.forEach(function(tweet_id, index){
+			retweetID_rateLimited(tweet_id, tweet_dict, index, number_of_ids_to_retweet, cb);
 		});
 	}else{
-		status.retweeted_matches = false;
-		cb(null, status);
+		mockingjay_status.retweeted_matches = false;
+		cb(null, mockingjay_status);
 	}
 };
 
@@ -104,10 +106,10 @@ function filterListByRegexIntoDict(arr, regx, key){
 };
 
 function reportMatches(since, matches){
-	status.since_last = since.length;
-	status.matching   = _.size(matches);
-	reportStatus('Since last: ' + status.since_last);
-	reportStatus('Matching regex: ' + status.matching);
+	mockingjay_status.since_last = since.length;
+	mockingjay_status.matching   = _.size(matches);
+	reportStatus('Since last: ' + mockingjay_status.since_last);
+	reportStatus('Matching regex: ' + mockingjay_status.matching);
 }
 
 function matchAndRetweet(arr, cb){
