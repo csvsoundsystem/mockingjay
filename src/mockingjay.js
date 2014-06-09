@@ -2,7 +2,7 @@ var fs             = require('fs'),
     Tw             = require('twit'),
 		_              = require('underscore'),
 		__             = require('../libs/underscore.ratelimit.js'),
-		verbose        = true;
+		verbose;
 
 var T,
 		regex,
@@ -136,6 +136,7 @@ function retrieveListStatuses(list_name, list_owner, last_id, count, cb){
 };
 
 function retrieveListAndRetweet(opts, cb){
+	verbose = opts.verbose;
 	var credentials = opts.credentials,
 	    bot_name = (opts.bot_name) ? opts.bot_name + '-' : '';
 
