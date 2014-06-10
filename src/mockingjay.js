@@ -50,7 +50,7 @@ function retweetID(tweet_id, tweet_dict, idx, number_of_ids_to_retweet, cb){
 	}
 
 	// Add the index and total of tweets we're retweeting
-	mockingjay_status.tweet_index = idx + ' of ' + number_of_ids_to_retweet;
+	mockingjay_status.tweet_index = (idx + 1) + ' of ' + number_of_ids_to_retweet;
 	T.post(tweet_type, tweet_info, function(err, replies) {
   	var this_moment = new Date();
 	  if(err){
