@@ -49,11 +49,12 @@ function retweetID(tweet_id, tweet_dict, idx, number_of_ids_to_retweet, cb){
 		tweet_info = {status: tweet_msg};
 	}
 
+	// Add the index and total of tweets we're retweeting
+	mockingjay_status.tweet_index = idx + ' of ' + number_of_ids_to_retweet;
 	T.post(tweet_type, tweet_info, function(err, replies) {
   	var this_moment = new Date();
 	  if(err){
 	    reportStatus('Retweet status:', this_moment, err);
-	    mockingjay_status.tweet_index = idx + ' of ' + number_of_ids_to_retweet;
 	    cb(err, mockingjay_status)
 	  }else{
 	  	reportStatus('Successful retweet', this_moment, tweet_id)
