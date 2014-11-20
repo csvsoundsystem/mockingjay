@@ -17,7 +17,7 @@ npm install mockingjay
 
 This example includes the optional inclusion of a `bot_name` see below for when you want to include that. Otherwise, you can leave it blank or omit it entirely.
 
-````
+````js
 var mockingjay = require('mockingjay');
 
 var opts = {
