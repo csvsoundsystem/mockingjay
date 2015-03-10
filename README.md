@@ -62,13 +62,13 @@ This package is meant to be run on a cron. Here's an example setup that runs it 
 
 ### Tweets that are retweets
 
-If someone in your list *retweeted* a tweet that matches your criteria, e.g. you're following senators using the word "gun" and a senator retweets an NRA tweet about "guns", then it will send out a tweet that looks like this:
+If someone in your list *retweeted* a tweet that matches your criteria, e.g. you're following senators using the word "gun" and a senator retweets an NRA tweet about "guns", then Mockingjay will send out a tweet that looks like this:
 
 ````
 .@<person-on-your-tracking-list> retweeted @<person-they-retweeted>: <url-of-original-tweet>
 ````
 
-Or, another example: it would look like this if a Mockingjay bot were retweeting @csvsoundsystem whenever they mentioned "big data", which someone should make by the way.
+If a Mockingjay bot were retweeting @csvsoundsystem whenever they mentioned "big data", which someone should make by the way, it would look like this:
 
 ````
 @csvsoundsystem retweeted @lifewinning: https://twitter.com/lifewinning/status/445688842721705985 
