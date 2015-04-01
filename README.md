@@ -20,7 +20,7 @@ You can install Node with [Homebrew](brew.sh) if you're on a mac or [their websi
 
 This example includes the optional inclusion of a `bot_name` see below for when you want to include that. Otherwise, you can leave it blank or omit it entirely.
 
-Make a file like in your project folder called `index.js`. To run this file once, do `node index.js` from within that project folder.
+Make a file like the one below called `index.js` and place it in the new project folder where you ran `npm intall mockingjay`. To run this file once, do `node index.js` from within that project folder. This is good for testing to make sure it's working.
 
 ````js
 var mockingjay = require('mockingjay');
@@ -50,7 +50,7 @@ mockingjay.retweet(opts, function(err, result){
   }else{
     console.log(err)
   }
-})
+});
 ````
 
 ### Options
