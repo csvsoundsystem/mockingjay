@@ -32,7 +32,7 @@ var opts = {
     access_token_secret:  ...
   },
   bot_name: "obamacare-bot"
-}
+};
 
 mockingjay.retweet(opts, function(err, result){
   if (!err){
