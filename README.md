@@ -9,7 +9,7 @@ We originally made this project when we were working at The Daily Beast and comp
 
 # Installation
 
-If you already have [NodeJS installed](http://nodejs.org/) run the following in a new project folder:
+If you already have [NodeJS](http://nodejs.org/) installed run the following in a new project folder:
 ````
 npm install mockingjay
 ````
