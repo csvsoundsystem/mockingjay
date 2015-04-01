@@ -59,7 +59,7 @@ If you have multiple instances of Mockingjay running on the same machine, you'll
 
 ### Crontab
 
-This package is meant to be run on a cron. Here's an example setup that runs every ten minutes on the 1s
+This package is meant to be run on a cron. Here's an example setup that runs every ten minutes on the 1s. To add this to your contrab, run `crontab -e`. It will most likely default to a vim editor so hit <kbd>i</kbd> to turn on insert mode and start typing. When done, press <kbd>esc</kbd> then type `:x` and hit <kbd>return</kbd>. It should say that your new crontab has been saved.
 
 ````
 1,11,21,31,41,51 * * * * /usr/bin/node /home/ubuntu/tasks/botname/index.js
