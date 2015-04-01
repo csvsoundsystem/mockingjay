@@ -9,13 +9,18 @@ We originally made this project when we were working at The Daily Beast and comp
 
 # Installation
 
+If you already have [NodeJS installed](http://nodejs.org/) run the following in a new project folder:
 ````
 npm install mockingjay
 ````
 
+You can install Node with [Homebrew](brew.sh) if you're on a mac or [their website](http://nodejs.org/) has double-click installers.
+
 # Usage
 
 This example includes the optional inclusion of a `bot_name` see below for when you want to include that. Otherwise, you can leave it blank or omit it entirely.
+
+Make a file like in your project folder called `index.js`. To run this file once, do `node index.js` from within that project folder.
 
 ````js
 var mockingjay = require('mockingjay');
@@ -54,11 +59,13 @@ If you have multiple instances of Mockingjay running on the same machine, you'll
 
 ### Crontab
 
-This package is meant to be run on a cron. Here's an example setup that runs it on the 1s
+This package is meant to be run on a cron. Here's an example setup that runs every ten minutes on the 1s
 
 ````
-1,11,21,31,41,51 * * * * /usr/bin/node /home/ubuntu/tasks/botname/bot.js
+1,11,21,31,41,51 * * * * /usr/bin/node /home/ubuntu/tasks/botname/index.js
 ````
+
+This command is the same as what we ran above as `node index.js` except we're giving full paths to our node executable and to our file. To find out where your node is installed, type `which node`. To get the full path to your index.js file, in your project folder type `pwd` to get teh full path to the working directory.
 
 ### Tweets that are retweets
 
